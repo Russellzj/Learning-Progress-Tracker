@@ -1,2 +1,3 @@
 build/
 /test/tracker/SampleTest.java
+/test/LearningProgressTrackerTest.java
