@@ -22,9 +22,9 @@ public class Main {
                 System.out.println("Enter student credentials or 'back' to return");
                 String studentCommand = sc.nextLine();
                 if (!studentCommand.equals("back")) {
-                    //removes bad white space from the user input
-                    studentCommand = studentCommand.trim().replaceAll("\\s+", " ");
                     if (studentInputChecker(studentCommand)) {
+                        //removes bad white space from the user input
+                        studentCommand = studentCommand.trim().replaceAll("\\s+", " ");
                         String[] studentID = studentInputSeparator(studentCommand);
                         students.add(new Student(studentID[0], studentID[1], studentID[2]));
                     }
@@ -42,11 +42,20 @@ public class Main {
 
     //Checks to see if the user entered the right amount of parameters for a student object
     public static boolean studentInputChecker(String studentCommand) {
-        if (studentCommand.split(" ").length > 2) {
+        studentCommand = studentCommand.trim().replaceAll("\\s+", " ");
+        System.out.println(studentCommand);
+        if (studentCommand.split(" ").length < 3) {
             System.out.println("Incorrect credentials.");
             return false;
         } else {
             String[] studentID = studentInputSeparator(studentCommand);
+            if (!studentID[0].matches("[A-Z][a-zA-z]*(['-][A-Za-z])*[a-z]+")) {
+                System.out.println("Incorrect first name.");
+                return false;
+            } else if (!studentID[1].matches("[A-Z]([a-zA-z ])*(['-][A-Za-z])*([a-zA-z ])*[a-z]")){
+                System.out.println("Incorrect last name.");
+                return false;
+            }
         }
         return true;
     }
