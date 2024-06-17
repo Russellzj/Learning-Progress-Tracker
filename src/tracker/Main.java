@@ -12,7 +12,7 @@ public class Main {
         Scanner sc = new Scanner(System.in);
         System.out.println("Learning Progress Tracker");
         //boolean running = true;
-        List<Student> students = new ArrayList<Student>();
+        List<Student> students = new ArrayList<>();
         while (true) {
             String userCommand = sc.nextLine();
             if (userCommand.equals("exit")) {
@@ -20,16 +20,19 @@ public class Main {
                 break;
             } else if (userCommand.equals("add students")) {
                 System.out.println("Enter student credentials or 'back' to return");
-                String studentCommand = sc.nextLine();
-                if (!studentCommand.equals("back")) {
-                    if (studentInputChecker(studentCommand)) {
-                        //removes bad white space from the user input
-                        studentCommand = studentCommand.trim().replaceAll("\\s+", " ");
-                        String[] studentID = studentInputSeparator(studentCommand);
-                        students.add(new Student(studentID[0], studentID[1], studentID[2]));
+                while(true) {
+                    String studentCommand = sc.nextLine();
+                    if (!studentCommand.equals("back")) {
+                        if (studentInputChecker(studentCommand)) {
+                            //removes bad white space from the user input
+                            studentCommand = studentCommand.trim().replaceAll("\\s+", " ");
+                            String[] studentID = studentInputSeparator(studentCommand);
+                            students.add(new Student(studentID[0], studentID[1], studentID[2]));
+                        }
+                    } else {
+                        System.out.printf("Total %d students have been added.\n", students.size());
+                        break;
                     }
-                } else {
-                    System.out.printf("Total %d students have been added.\n", students.size());
                 }
             } else if (userCommand.isBlank()) {
                 System.out.println("No input.");
@@ -43,7 +46,6 @@ public class Main {
     //Checks to see if the user entered the right amount of parameters for a student object
     public static boolean studentInputChecker(String studentCommand) {
         studentCommand = studentCommand.trim().replaceAll("\\s+", " ");
-        System.out.println(studentCommand);
         if (studentCommand.split(" ").length < 3) {
             System.out.println("Incorrect credentials.");
             return false;
