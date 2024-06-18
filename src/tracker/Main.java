@@ -13,25 +13,35 @@ public class Main {
         System.out.println("Learning Progress Tracker");
         //boolean running = true;
         List<Student> students = new ArrayList<>();
-        while (true) {
+        boolean continueProgram = true;
+        while (continueProgram) {
             String userCommand = sc.nextLine();
             if (userCommand.equals("exit")) {
                 System.out.println("Bye!");
-                break;
+                continueProgram = false;
+            } else if (userCommand.equals("back")) {
+                System.out.println("Enter 'exit' to exit the program");
             } else if (userCommand.equals("add students")) {
                 System.out.println("Enter student credentials or 'back' to return");
                 while(true) {
                     String studentCommand = sc.nextLine();
-                    if (!studentCommand.equals("back")) {
+                    /*if (studentCommand.equals("exit")) {
+                        System.out.println("Bye!");
+                        continueProgram = false;
+                        break;
+
+                     */
+                    if (studentCommand.equals("back")) {
+                        System.out.printf("Total %d students have been added.\n", students.size());
+                        break;
+                    } else  {
                         if (studentInputChecker(studentCommand)) {
                             //removes bad white space from the user input
                             studentCommand = studentCommand.trim().replaceAll("\\s+", " ");
                             String[] studentID = studentInputSeparator(studentCommand);
                             students.add(new Student(studentID[0], studentID[1], studentID[2]));
+                            System.out.println("Student has been added.");
                         }
-                    } else {
-                        System.out.printf("Total %d students have been added.\n", students.size());
-                        break;
                     }
                 }
             } else if (userCommand.isBlank()) {
