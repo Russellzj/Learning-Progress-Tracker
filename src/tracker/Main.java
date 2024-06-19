@@ -25,12 +25,6 @@ public class Main {
                 System.out.println("Enter student credentials or 'back' to return");
                 while(true) {
                     String studentCommand = sc.nextLine();
-                    /*if (studentCommand.equals("exit")) {
-                        System.out.println("Bye!");
-                        continueProgram = false;
-                        break;
-
-                     */
                     if (studentCommand.equals("back")) {
                         System.out.printf("Total %d students have been added.\n", students.size());
                         break;
@@ -61,10 +55,12 @@ public class Main {
             return false;
         } else {
             String[] studentID = studentInputSeparator(studentCommand);
-            if (!studentID[0].matches("[A-Z][a-zA-z]*(['-][A-Za-z])*[a-z]+")) {
+            //regex to check against student first
+            String studentNameRequirements = "[A-Za-z][a-zA-z]*((['-][A-Za-z]+)|[A-Za-z]+)";
+            if (!studentID[0].matches(studentNameRequirements)) {
                 System.out.println("Incorrect first name.");
                 return false;
-            } else if (!studentID[1].matches("[A-Z]([a-zA-z ])*(['-][A-Za-z])*([a-zA-z ])*[a-z]")){
+            } else if (!studentID[1].matches("[A-Za-z]([a-zA-z ])*((['-][A-Za-z ]+)+|([A-Za-z ]))+")){
                 System.out.println("Incorrect last name.");
                 return false;
             }
