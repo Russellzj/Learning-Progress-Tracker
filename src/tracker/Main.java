@@ -63,6 +63,9 @@ public class Main {
             } else if (!studentID[1].matches("[A-Za-z]([a-zA-z ])*((['-][A-Za-z ]+)+|([A-Za-z ]))+")){
                 System.out.println("Incorrect last name.");
                 return false;
+            } else if (!studentID[2].matches("[\\w.]+@[\\w]+\\.[\\w]+")){
+                System.out.println("Incorrect email");
+                return false;
             }
         }
         return true;

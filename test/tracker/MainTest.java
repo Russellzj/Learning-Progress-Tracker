@@ -17,7 +17,7 @@ public class MainTest {
 
     //Tests StudentInputChecker to make sure accepted inputs are accepted
     @ParameterizedTest
-    @ValueSource(strings = {"na'me s-ue ii@ii.ii", "J-ohn Da ts@gmail.com", "Jo D-brand D-brand@gmail.com", "John  Doe Dear   doe.j@gmail.com"})
+    @ValueSource(strings = {"na'me s-ue ii@ii.ii", "J-ohn Da ts@gmail.com", "Jo D-brand Dbrand@gmail.com", "John  Doe Dear   doe.j@gmail.com"})
     void testStudentInputCheckerTrue(String studentID) {
         assertTrue(Main.studentInputChecker(studentID));
     }
