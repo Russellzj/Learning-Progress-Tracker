@@ -5,5 +5,4 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class StudentTest {
     //tests the constructor of the Student class
-
 }
