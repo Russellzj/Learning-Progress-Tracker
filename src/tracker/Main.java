@@ -47,7 +47,7 @@ public class Main {
             } else if (userCommand.isBlank()) {
                 System.out.println("No input.");
             } else {
-                System.out.println("Error: Unknown command!");
+                System.out.println("Enter 'exit' to exit the program.");
             }
         }
 
