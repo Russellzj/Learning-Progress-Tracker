@@ -46,8 +46,11 @@ public class Main {
                 }
             } else if (userCommand.isBlank()) {
                 System.out.println("No input.");
-            } else {
+            } else if (userCommand.equals("back")) {
                 System.out.println("Enter 'exit' to exit the program.");
+
+            } else {
+                System.out.println("Unknown command!");
             }
         }
 
@@ -61,10 +64,12 @@ public class Main {
             return false;
         } else {
             String[] studentID = studentInputSeparator(studentCommand);
-            if (!studentID[0].matches("[A-Z][a-zA-z]*(['-][A-Za-z])*[a-z]+")) {
+            if (!studentID[0].matches("[A-Za-z][a-zA-z ]*(['-][A-Za-z])*[a-zA-Z ]*")
+                    && studentID[0].length() > 2) {
                 System.out.println("Incorrect first name.");
                 return false;
-            } else if (!studentID[1].matches("[A-Z]([a-zA-z ])*(['-][A-Za-z])*([a-zA-z ])*[a-z]")){
+            } else if (!studentID[1].matches("[A-Za-z][a-zA-z ]*(['-][A-Za-z])*([a-zA-z ])*")
+                    && studentID[1].length() > 2){
                 System.out.println("Incorrect last name.");
                 return false;
             }
