@@ -31,7 +31,13 @@ public class Main {
                             //removes bad white space from the user input
                             studentCommand = studentCommand.trim().replaceAll("\\s+", " ");
                             String[] studentID = studentInputSeparator(studentCommand);
-                            students.add(new Student(studentID[0], studentID[1], studentID[2], id++));
+                            if (emails.contains(studentID[2])) {
+                                System.out.println("This email is already taken.");
+                            } else {
+                                emails.add(studentID[2]);
+                                students.add(new Student(studentID[0], studentID[1], studentID[2], id++));
+                                System.out.println("This student has been added.");
+                            }
                         }
                     } else {
                         System.out.printf("Total %d students have been added.\n", students.size());
