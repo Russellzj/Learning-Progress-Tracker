@@ -64,13 +64,16 @@ public class Main {
             return false;
         } else {
             String[] studentID = studentInputSeparator(studentCommand);
-            if (!studentID[0].matches("[A-Za-z][a-zA-z ]*(['-][A-Za-z])*[a-zA-Z ]*")
-                    && studentID[0].length() > 2) {
+            if (!studentID[0].matches("[A-Za-z][a-zA-z]*(['-][A-Za-z])*[a-zA-Z]*")
+                    || studentID[0].length() < 2) {
                 System.out.println("Incorrect first name.");
                 return false;
             } else if (!studentID[1].matches("[A-Za-z][a-zA-z ]*(['-][A-Za-z])*([a-zA-z ])*")
-                    && studentID[1].length() > 2){
+                    || studentID[1].length() < 2){
                 System.out.println("Incorrect last name.");
+                return false;
+            } else if(!studentID[2].matches("[.\\w'-]+@\\w+\\.\\w+")) {
+                System.out.println("Incorrect email.");
                 return false;
             }
         }
