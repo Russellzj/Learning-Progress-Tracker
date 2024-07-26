@@ -10,7 +10,7 @@ public class MainTest {
 
     //Tests StudentInputChecker to make sure there are no false inputs
     @ParameterizedTest
-    @ValueSource(strings = {"John Doe", "John", "J--ohn  Doe doe@gmail.com", "  John  Doe", "J-'ohn doe jDoe@gmail.com"})
+    @ValueSource(strings = {"n sam same@store.com", "John Doe", "John", "J--ohn  Doe doe@gmail.com", "  John  Doe", "J-'ohn doe jDoe@gmail.com"})
     void testStudentInputCheckerFalse(String studentID) {
         assertFalse(Main.studentInputChecker(studentID));
     }
