@@ -8,12 +8,16 @@ import java.util.List;
 import java.util.Scanner;
 
 public class Main {
+
+    public static List<Student> students= new ArrayList<>();
+    public static HashSet<String> usedEmails = new HashSet<>();
+    public static int currentStudentID = 1000;
     public static void main(String[] args) {
 
         Scanner sc = new Scanner(System.in);
         System.out.println("Learning Progress Tracker");
         //boolean running = true;
-        List<Student> students = new ArrayList<>();
+        //List<Student> students = new ArrayList<>();
         HashSet<String> emails = new HashSet<>();
         //Set initial student ID to 1000
         int id = 1000;
@@ -24,43 +28,53 @@ public class Main {
                 break;
             } else if (userCommand.equals("add students")) {
                 System.out.println("Enter student credentials or 'back' to return");
+                int studentsAdded = 0;
                 while(true) {
                     String studentCommand = sc.nextLine();
                     if (!studentCommand.equals("back")) {
                         if (studentCommand.split(" ").length < 3) {
                             System.out.println("Incorrect credentials.");
                         } else {
-                            String[] studentID = studentInputSeparator(studentCommand);
-                            String firstName = studentID[0];
-                            String lastName = studentID[1];
-                            String email = studentID[2];
-                            if (studentInputChecker(firstName, lastName, email)) {
-                                //removes bad white space from the user input
-                                //String[] studentID = studentInputSeparator(studentCommand);
-                                if (emails.contains(email)) {
-                                    System.out.println("This email is already taken.");
-                                } else {
-                                    emails.add(email);
-                                    students.add(new Student(firstName, lastName, email, id++));
-                                    System.out.println("This student has been added.");
-                                }
-                            }
+                            studentsAdded = addStudent(studentCommand) ? studentsAdded + 1 : studentsAdded;
                         }
                     } else {
-                            System.out.printf("Total %d students have been added.\n", students.size());
-                            break;
-                        }
+                        System.out.printf("Total %d students have been added.\n", studentsAdded);
+                        break;
                     }
+                }
             } else if (userCommand.isBlank()) {
                 System.out.println("No input.");
             } else if (userCommand.equals("back")) {
                 System.out.println("Enter 'exit' to exit the program.");
 
-            } else {
+            } else if (userCommand.equals("list")) {
+                printStudentList(students);
+            }
+            else {
                 System.out.println("Unknown command!");
             }
         }
 
+    }
+
+    //Adds students to Student ArrayList
+    public static boolean addStudent(String userInput) {
+        String[] studentInfo = studentInputSeparator(userInput);
+        String firstName = studentInfo[0];
+        String lastName = studentInfo[1];
+        String email = studentInfo[2];
+        if (studentInputChecker(firstName, lastName, email)) {
+            if (usedEmails.contains(email)) {
+                System.out.println("This email is already taken.");
+                return false;
+            }
+                usedEmails.add(email);
+                students.add(new Student(firstName, lastName, email, currentStudentID++));
+                System.out.println("This student has been added.");
+                return true;
+        } else {
+            return false;
+        }
     }
 
     //Checks to see if the user entered the right amount of parameters for a student object
@@ -89,5 +103,15 @@ public class Main {
                         studentCommand.substring(studentCommand.indexOf(" ") + 1, studentCommand.lastIndexOf(" ")),
                         studentCommand.substring(studentCommand.lastIndexOf(" ") + 1)
                 };
+    }
+
+    public static void printStudentList(List<Student> students) {
+        if (students.isEmpty()) {
+            System.out.println("No students found");
+        }
+        System.out.println("Students:");
+        for (Student student : students) {
+            System.out.println(student.getId());
+        }
     }
 }
