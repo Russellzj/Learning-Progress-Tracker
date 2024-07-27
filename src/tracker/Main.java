@@ -27,23 +27,30 @@ public class Main {
                 while(true) {
                     String studentCommand = sc.nextLine();
                     if (!studentCommand.equals("back")) {
-                        if (studentInputChecker(studentCommand)) {
-                            //removes bad white space from the user input
-                            studentCommand = studentCommand.trim().replaceAll("\\s+", " ");
+                        if (studentCommand.split(" ").length < 3) {
+                            System.out.println("Incorrect credentials.");
+                        } else {
                             String[] studentID = studentInputSeparator(studentCommand);
-                            if (emails.contains(studentID[2])) {
-                                System.out.println("This email is already taken.");
-                            } else {
-                                emails.add(studentID[2]);
-                                students.add(new Student(studentID[0], studentID[1], studentID[2], id++));
-                                System.out.println("This student has been added.");
+                            String firstName = studentID[0];
+                            String lastName = studentID[1];
+                            String email = studentID[2];
+                            if (studentInputChecker(firstName, lastName, email)) {
+                                //removes bad white space from the user input
+                                //String[] studentID = studentInputSeparator(studentCommand);
+                                if (emails.contains(email)) {
+                                    System.out.println("This email is already taken.");
+                                } else {
+                                    emails.add(email);
+                                    students.add(new Student(firstName, lastName, email, id++));
+                                    System.out.println("This student has been added.");
+                                }
                             }
                         }
                     } else {
-                        System.out.printf("Total %d students have been added.\n", students.size());
-                        break;
+                            System.out.printf("Total %d students have been added.\n", students.size());
+                            break;
+                        }
                     }
-                }
             } else if (userCommand.isBlank()) {
                 System.out.println("No input.");
             } else if (userCommand.equals("back")) {
@@ -57,31 +64,25 @@ public class Main {
     }
 
     //Checks to see if the user entered the right amount of parameters for a student object
-    public static boolean studentInputChecker(String studentCommand) {
-        studentCommand = studentCommand.trim().replaceAll("\\s+", " ");
-        if (studentCommand.split(" ").length < 3) {
-            System.out.println("Incorrect credentials.");
-            return false;
-        } else {
-            String[] studentID = studentInputSeparator(studentCommand);
-            if (!studentID[0].matches("[A-Za-z][a-zA-z]*(['-][A-Za-z])*[a-zA-Z]*")
-                    || studentID[0].length() < 2) {
+    public static boolean studentInputChecker(String firstName, String lastName, String email) {
+            if (!firstName.matches("[A-Za-z][a-zA-z]*(['-][A-Za-z])*[a-zA-Z]*")
+                    || firstName.length() < 2) {
                 System.out.println("Incorrect first name.");
                 return false;
-            } else if (!studentID[1].matches("[A-Za-z][a-zA-z ]*(['-][A-Za-z])*([a-zA-z ])*")
-                    || studentID[1].length() < 2){
+            } else if (!lastName.matches("[A-Za-z][a-zA-z ]*(['-][A-Za-z])*([a-zA-z ])*")
+                    || lastName.length() < 2){
                 System.out.println("Incorrect last name.");
                 return false;
-            } else if(!studentID[2].matches("[.\\w'-]+@\\w+\\.\\w+")) {
+            } else if(!email.matches("[.\\w'-]+@\\w+\\.\\w+")) {
                 System.out.println("Incorrect email.");
                 return false;
             }
+            return true;
         }
-        return true;
-    }
 
     //Separates the user command into 3 different Strings
     public static String[] studentInputSeparator(String studentCommand) {
+        studentCommand = studentCommand.trim().replaceAll("\\s+", " ");
         return new String[]
                 {
                         studentCommand.substring(0, studentCommand.indexOf(" ")),
