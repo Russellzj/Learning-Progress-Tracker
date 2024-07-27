@@ -105,13 +105,16 @@ public class Main {
                 };
     }
 
+    //Prints students based on their id
     public static void printStudentList(List<Student> students) {
         if (students.isEmpty()) {
             System.out.println("No students found");
-        }
-        System.out.println("Students:");
-        for (Student student : students) {
-            System.out.println(student.getId());
+
+        } else {
+            System.out.println("Students:");
+            for (Student student : students) {
+                System.out.println(student.getId());
+            }
         }
     }
 }
