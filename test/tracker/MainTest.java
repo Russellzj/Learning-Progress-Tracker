@@ -2,6 +2,7 @@ package tracker;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.ValueSource;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -10,32 +11,34 @@ public class MainTest {
 
     //Tests StudentInputChecker to make sure there are no false inputs
     @ParameterizedTest
-    @ValueSource(strings = {"n sam same@store.com", "John Doe", "John", "J--ohn  Doe doe@gmail.com", "  John  Doe", "J-'ohn doe jDoe@gmail.com"})
-    void testStudentInputCheckerFalse(String studentID) {
-        assertFalse(Main.studentInputChecker(studentID));
+    @CsvSource({"n, sam, same@store.com", "J--ohn, Doe, doe@gmail.com", "J-'ohn, doe, jDoe@gmail.com"})
+    void testStudentInputCheckerFalse(String firstName, String lastName, String email) {
+        assertFalse(Main.studentInputChecker(firstName, lastName, email));
     }
 
     //Tests StudentInputChecker to make sure accepted inputs are accepted
     @ParameterizedTest
-    @ValueSource(strings = {"name s-u ii@ii.ii", "J-ohn Da ts@gmail.com", "Jo'hn D-brand D-brand@gmail.com", "John  Doe Dear   doe.j@gmail.com"})
-    void testStudentInputCheckerTrue(String studentID) {
-        assertTrue(Main.studentInputChecker(studentID));
+    @CsvSource({"name, s-u, ii@ii.ii", "J-ohn, Da, ts@gmail.com", "Jo'hn, D-brand, D-brand@gmail.com", "John, Doe Dear, doe.j@gmail.com"})
+    void testStudentInputCheckerTrue(String firstName, String lastName, String email) {
+        assertTrue(Main.studentInputChecker(firstName, lastName, email));
     }
 
+    @ParameterizedTest
+    @ValueSource (strings = {"name su ii@ii.com"})
+    void testNewTest(String userInput){
+        String[] separateInput = Main.studentInputSeparator(userInput);
+        assertTrue(Main.studentInputChecker(separateInput[0], separateInput[1], separateInput[2]));
+    }
 
-/*
+    /*
     @Test
     public void testStudentInputChecker() {
-        boolean testResults = true;
-        String[] falseInputs = {"John Doe", "John", "John  Doe"};
+        String[] falseInputs = {"n sam same@store.com", "J--ohn Doe doe@gmail.com", "J-'ohn doe jDoe@gmail.com"};
         for (String studentInfo : falseInputs) {
-            if(!Main.studentInputChecker(studentInfo)){
-                System.out.println(studentInfo + ": resulted in false positive.");
-                testResults = false;
-            }
+            String[] currentStudent = Main.studentInputSeparator(studentInfo);
+            assertFalse(Main.studentInputChecker(currentStudent[0], currentStudent[1], currentStudent[2]));
         }
-        assertTrue(testResults);
     }
 
- */
+     */
 }
