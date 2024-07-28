@@ -24,6 +24,24 @@ public class Student {
     public String getEmail() {return email;}
     public int getId() {return id;}
 
+
+    //The following methods are to add points to the student's classes
+    public void addJavaPoints(int points) {
+        java += points;
+    }
+
+    public void addDataStructuresAndALgorithmsPoints(int points) {
+        dataStructuresAndAlgroithms += points;
+    }
+
+    public void addDatabasesPoints(int points) {
+        databases += points;
+    }
+
+    public void addSpringPoints(int points) {
+        spring += points;
+    }
+
     @Override
     public boolean equals(Object other) {
         if (this == other) return true;
@@ -36,4 +54,5 @@ public class Student {
         int hash = 32;
         return hash * 31 + this.id;
     }
+
 }
