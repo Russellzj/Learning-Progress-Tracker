@@ -1,10 +1,16 @@
 package tracker.People;
 
 public class Student {
+    //Basic student information
     final private int id;
     private String firstName;
     private String lastName;
     private String email;
+    //classes that are filled with points from said classes
+    private int java = 0;
+    private int dataStructuresAndAlgroithms = 0;
+    private int databases = 0;
+    private int spring = 0;
 
     public Student(String firstName, String lastName, String email, int id) {
         this.firstName = firstName;
