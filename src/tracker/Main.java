@@ -18,7 +18,6 @@ public class Main {
         System.out.println("Learning Progress Tracker");
         //boolean running = true;
         //List<Student> students = new ArrayList<>();
-        HashSet<String> emails = new HashSet<>();
         //Set initial student ID to 1000
         int id = 1000;
         while (true) {
