@@ -2,24 +2,20 @@ package tracker;
 
 import tracker.People.Student;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 
 public class Main {
 
-    public static List<Student> students= new ArrayList<>();
+    public static List<Student> students2= new ArrayList<>();
+    public static LinkedHashSet<Student> students = new LinkedHashSet<>();
     public static HashSet<String> usedEmails = new HashSet<>();
+    //Set initial student ID to 1000
     public static int currentStudentID = 1000;
     public static void main(String[] args) {
 
         Scanner sc = new Scanner(System.in);
         System.out.println("Learning Progress Tracker");
         //boolean running = true;
-        //List<Student> students = new ArrayList<>();
-        //Set initial student ID to 1000
-        int id = 1000;
         while (true) {
             String userCommand = sc.nextLine();
             if (userCommand.equals("exit")) {
@@ -47,7 +43,7 @@ public class Main {
                 System.out.println("Enter 'exit' to exit the program.");
 
             } else if (userCommand.equals("list")) {
-                printStudentList(students);
+                printStudentList();
             }
             else {
                 System.out.println("Unknown command!");
@@ -104,8 +100,12 @@ public class Main {
                 };
     }
 
+    public static void addStudentPoints(int java, int dataStructuresAndAlgorithms, int databases, int spring) {
+
+    }
+
     //Prints students based on their id
-    public static void printStudentList(List<Student> students) {
+    public static void printStudentList() {
         if (students.isEmpty()) {
             System.out.println("No students found");
 
