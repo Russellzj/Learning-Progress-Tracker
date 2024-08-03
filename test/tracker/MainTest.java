@@ -30,6 +30,8 @@ public class MainTest {
         assertTrue(Main.studentInputChecker(separateInput[0], separateInput[1], separateInput[2]));
     }
 
+
+
     /*
     @Test
     public void testStudentInputChecker() {
