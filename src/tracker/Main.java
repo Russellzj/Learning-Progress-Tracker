@@ -6,8 +6,9 @@ import java.util.*;
 
 public class Main {
 
-    public static List<Student> students2= new ArrayList<>();
-    public static LinkedHashSet<Student> students = new LinkedHashSet<>();
+    //public static List<Student> students2= new ArrayList<>();
+    //public static LinkedHashSet<Student> students = new LinkedHashSet<>();
+    public static LinkedHashMap<Integer, Student> students = new LinkedHashMap();
     public static HashSet<String> usedEmails = new HashSet<>();
     //Set initial student ID to 1000
     public static int currentStudentID = 1000;
@@ -24,7 +25,7 @@ public class Main {
             } else if (userCommand.equals("add students")) {
                 System.out.println("Enter student credentials or 'back' to return");
                 int studentsAdded = 0;
-                while(true) {
+                while (true) {
                     String studentCommand = sc.nextLine();
                     if (!studentCommand.equals("back")) {
                         if (studentCommand.split(" ").length < 3) {
@@ -37,6 +38,48 @@ public class Main {
                         break;
                     }
                 }
+            } else if (userCommand.equals("add points")) {
+                System.out.println("Enter an id and points or 'back' to return");
+                boolean addPointLoop = true;
+                while (addPointLoop) {
+                    String pointsInput = sc.nextLine();
+                    if (pointsInput.equalsIgnoreCase("back")) {
+                        break;
+                    }
+                    if (pointsInput.contains("[a-zA-Z]")) {
+                        System.out.println("Incorrect ");
+                    } else {
+                        String[] pointValues = pointsInput.split(" ");
+                        if (pointValues.length != 5) {
+                            System.out.println("Incorrect points format");
+                            break;
+                        }
+                        for (String pointValue : pointValues) {
+                            if (Integer.parseInt(pointValue) < 0) {
+                                addPointLoop = false;
+                                break;
+                            }
+                        }
+                        if (!addPointLoop) {
+                            System.out.println("Incorrect points format");
+                            break;
+                        }
+                        if (!students.containsValue(Integer.parseInt(pointValues[0]))) {
+                            System.out.printf("No student is found for id=%s\n", pointValues[0]);
+                            break;
+                        }
+                        //Looks up student by ID and adds in the new points
+                        students.get(Integer.parseInt(pointValues[0])).addAllClassPoints
+                                (Integer.parseInt(pointValues[1]), Integer.parseInt(pointValues[2]),
+                                        Integer.parseInt(pointValues[3]), Integer.parseInt(pointValues[4]));
+                        System.out.println("Points updated");
+
+
+                    }
+                }
+            } else if (userCommand.equals("find")) {
+                System.out.println("Enter an id or 'back' to return");
+                String findUserInput = sc.nextLine();
             } else if (userCommand.isBlank()) {
                 System.out.println("No input.");
             } else if (userCommand.equals("back")) {
@@ -64,7 +107,8 @@ public class Main {
                 return false;
             }
                 usedEmails.add(email);
-                students.add(new Student(firstName, lastName, email, currentStudentID++));
+                Student newStudent = new Student(firstName, lastName, email, currentStudentID++);
+                students.put(newStudent.getId(), newStudent);
                 System.out.println("This student has been added.");
                 return true;
         } else {
@@ -104,6 +148,9 @@ public class Main {
 
     }
 
+    public static boolean studentPointInputChecker(String input) {
+        return true;
+    }
     //Prints students based on their id
     public static void printStudentList() {
         if (students.isEmpty()) {
@@ -111,8 +158,8 @@ public class Main {
 
         } else {
             System.out.println("Students:");
-            for (Student student : students) {
-                System.out.println(student.getId());
+            for (int studentID : students.keySet()) {
+                System.out.println(studentID);
             }
         }
     }

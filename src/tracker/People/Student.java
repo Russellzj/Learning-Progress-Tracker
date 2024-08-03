@@ -27,19 +27,25 @@ public class Student {
 
     //The following methods are to add points to the student's classes
     public void addJavaPoints(int points) {
-        java += points;
+        this.java += points;
     }
-
-    public void addDataStructuresAndALgorithmsPoints(int points) {
-        dataStructuresAndAlgroithms += points;
+    public void addDataStructuresAndAlgorithmsPoints(int points) {
+        this.dataStructuresAndAlgroithms += points;
     }
 
     public void addDatabasesPoints(int points) {
-        databases += points;
+        this.databases += points;
     }
 
     public void addSpringPoints(int points) {
-        spring += points;
+        this.spring += points;
+    }
+
+    public void addAllClassPoints(int java, int dataStructuresAndAlgorithms, int databases, int spring) {
+        addJavaPoints(java);
+        addDataStructuresAndAlgorithmsPoints(dataStructuresAndAlgorithms);
+        addDatabasesPoints(databases);
+        addSpringPoints(spring);
     }
 
     @Override
