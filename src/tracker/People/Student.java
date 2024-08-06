@@ -49,6 +49,12 @@ public class Student {
     }
 
     @Override
+    public String toString() {
+        return String.format("%d points: Java=%d; DSA=%d; Databases=%d; Spring=%d", id,java, dataStructuresAndAlgroithms,
+                databases, spring);
+    }
+
+    @Override
     public boolean equals(Object other) {
         if (this == other) return true;
         if (!(other instanceof Student)) return false;
