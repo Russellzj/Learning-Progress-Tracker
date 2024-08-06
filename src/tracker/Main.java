@@ -8,7 +8,7 @@ public class Main {
 
     //public static List<Student> students2= new ArrayList<>();
     //public static LinkedHashSet<Student> students = new LinkedHashSet<>();
-    public static LinkedHashMap<Integer, Student> students = new LinkedHashMap();
+    public static LinkedHashMap<Integer, Student> students = new LinkedHashMap<>();
     public static HashSet<String> usedEmails = new HashSet<>();
     //Set initial student ID to 1000
     public static int currentStudentID = 1000;
@@ -40,46 +40,49 @@ public class Main {
                 }
             } else if (userCommand.equals("add points")) {
                 System.out.println("Enter an id and points or 'back' to return");
-                boolean addPointLoop = true;
-                while (addPointLoop) {
+                while (true) {
                     String pointsInput = sc.nextLine();
-                    if (pointsInput.equalsIgnoreCase("back")) {
+                    if (pointsInput.equals("back")) {
                         break;
                     }
-                    if (pointsInput.contains("[a-zA-Z]")) {
-                        System.out.println("Incorrect ");
-                    } else {
-                        String[] pointValues = pointsInput.split(" ");
-                        if (pointValues.length != 5) {
-                            System.out.println("Incorrect points format");
-                            break;
-                        }
-                        for (String pointValue : pointValues) {
-                            if (Integer.parseInt(pointValue) < 0) {
-                                addPointLoop = false;
-                                break;
+                    if (studentPointInputChecker(pointsInput)) {
+                        String[] pointInputSplit = pointsInput.split(" ");
+                        if (!pointInputSplit[0].matches("[0-9]+")) {
+                            System.out.printf("No student is found for id=%s\n", pointInputSplit[0]);
+                        } else {
+                            int[] pointValues = new int[5];
+                            for (int i = 0; i < pointInputSplit.length; i++) {
+                                pointValues[i] = Integer.parseInt(pointInputSplit[i]);
+                            }
+                            if (students.containsKey(pointValues[0])) {
+                                //Looks up student by ID and adds in the new points
+                                students.get(pointValues[0]).addAllClassPoints(
+                                        pointValues[1], pointValues[2], pointValues[3], pointValues[4]
+                                );
+                                System.out.println("Points updated");
+                            } else {
+                                System.out.printf("No student is found for idInteger=%d\n", pointValues[0]);
                             }
                         }
-                        if (!addPointLoop) {
-                            System.out.println("Incorrect points format");
-                            break;
-                        }
-                        if (!students.containsValue(Integer.parseInt(pointValues[0]))) {
-                            System.out.printf("No student is found for id=%s\n", pointValues[0]);
-                            break;
-                        }
-                        //Looks up student by ID and adds in the new points
-                        students.get(Integer.parseInt(pointValues[0])).addAllClassPoints
-                                (Integer.parseInt(pointValues[1]), Integer.parseInt(pointValues[2]),
-                                        Integer.parseInt(pointValues[3]), Integer.parseInt(pointValues[4]));
-                        System.out.println("Points updated");
-
-
                     }
                 }
             } else if (userCommand.equals("find")) {
                 System.out.println("Enter an id or 'back' to return");
-                String findUserInput = sc.nextLine();
+                while (true) {
+                    String findUserInput = sc.nextLine();
+                    if (findUserInput.equals("back")) {
+                        break;
+                    }
+                    if (!findUserInput.matches("[0-9]+")) {
+                        System.out.println("No student is found for id=" + findUserInput);
+                    } else {
+                        if (students.containsKey(Integer.valueOf(findUserInput))) {
+                            System.out.println(students.get(Integer.parseInt(findUserInput)));
+                        } else {
+                            System.out.println("No student is found for id=" + findUserInput);
+                        }
+                    }
+                }
             } else if (userCommand.isBlank()) {
                 System.out.println("No input.");
             } else if (userCommand.equals("back")) {
@@ -148,7 +151,13 @@ public class Main {
 
     }
 
+    //Checks to see if the input from the user is acceptable for adding points to a student
     public static boolean studentPointInputChecker(String input) {
+        String problemMessage = "Incorrect points format";
+        if (!input.matches("[a-zA-Z0-9]+( [0-9]+){4}")) {
+            System.out.println(problemMessage);
+            return false;
+        }
         return true;
     }
     //Prints students based on their id
