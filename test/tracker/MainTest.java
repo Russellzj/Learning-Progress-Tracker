@@ -1,5 +1,6 @@
 package tracker;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -38,7 +39,14 @@ public class MainTest {
         Main.addPoints("1000 1 2 3 4");
     }
 
-
+    @Test
+    @DisplayName("Most Popular")
+        void testMostPopular() {
+            SchoolClass currentClasses = new SchoolClass();
+            currentClasses.addPoint(new int[]{10, 0, 0, 0});
+            currentClasses.addPoint(new int[]{1, 0, 3, 4});
+        Assertions.assertEquals(currentClasses.mostPopular(), "Most Popular: Java");
+        }
 
     /*
     @Test
