@@ -1,5 +1,6 @@
 package tracker;
 
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
@@ -28,6 +29,13 @@ public class MainTest {
     void testNewTest(String userInput){
         String[] separateInput = Main.studentInputSeparator(userInput);
         assertTrue(Main.studentInputChecker(separateInput[0], separateInput[1], separateInput[2]));
+    }
+
+    @Test
+    @DisplayName("Test Add Points Function")
+    void testAddPoints(){
+        Main.addStudent("John Doe JDoe@gmai.com");
+        Main.addPoints("1000 1 2 3 4");
     }
 
 
