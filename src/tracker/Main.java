@@ -12,6 +12,8 @@ public class Main {
     public static HashSet<String> usedEmails = new HashSet<>();
     //Set initial student ID to 1000
     public static int currentStudentID = 1000;
+    public static SchoolClass currentClasses = new SchoolClass();
+
     public static void main(String[] args) {
 
         Scanner sc = new Scanner(System.in);
@@ -46,24 +48,7 @@ public class Main {
                         break;
                     }
                     if (studentPointInputChecker(pointsInput)) {
-                        String[] pointInputSplit = pointsInput.split(" ");
-                        if (!pointInputSplit[0].matches("[0-9]+")) {
-                            System.out.printf("No student is found for id=%s\n", pointInputSplit[0]);
-                        } else {
-                            int[] pointValues = new int[5];
-                            for (int i = 0; i < pointInputSplit.length; i++) {
-                                pointValues[i] = Integer.parseInt(pointInputSplit[i]);
-                            }
-                            if (students.containsKey(pointValues[0])) {
-                                //Looks up student by ID and adds in the new points
-                                students.get(pointValues[0]).addAllClassPoints(
-                                        pointValues[1], pointValues[2], pointValues[3], pointValues[4]
-                                );
-                                System.out.println("Points updated");
-                            } else {
-                                System.out.printf("No student is found for idInteger=%d\n", pointValues[0]);
-                            }
-                        }
+                            addPoints(pointsInput);
                     }
                 }
             } else if (userCommand.equals("find")) {
@@ -147,15 +132,20 @@ public class Main {
                 };
     }
 
-    public static void addStudentPoints(int java, int dataStructuresAndAlgorithms, int databases, int spring) {
-
-    }
-
     //Checks to see if the input from the user is acceptable for adding points to a student
     public static boolean studentPointInputChecker(String input) {
         String problemMessage = "Incorrect points format";
         if (!input.matches("[a-zA-Z0-9]+( [0-9]+){4}")) {
             System.out.println(problemMessage);
+            return false;
+        }
+        String[] inputSplit = input.split(" ");
+        if (!inputSplit[0].matches("[0-9]+")) {
+            System.out.printf("No student is found for id=%s\n", inputSplit[0]);
+            return false;
+        }
+        if (!students.containsKey(Integer.parseInt(inputSplit[0]))) {
+            System.out.println("Not student is found for id=" + inputSplit[0]);
             return false;
         }
         return true;
@@ -171,5 +161,19 @@ public class Main {
                 System.out.println(studentID);
             }
         }
+    }
+
+    //Adds Points to students and updates Class Array
+    public static void addPoints(String input) {
+        int[] pointValues = new int[5];
+        String[] inputSplit = input.split(" ");
+        for (int i = 0; i < inputSplit.length; i++) {
+            pointValues[i] = Integer.parseInt(inputSplit[i]);
+        }
+        students.get(pointValues[0]).addAllClassPoints(
+                pointValues[1], pointValues[2], pointValues[3], pointValues[4]
+        );
+        currentClasses.addPoint(Arrays.copyOfRange(pointValues,1, 5));
+        System.out.println("Points updated");
     }
 }
