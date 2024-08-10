@@ -1,6 +1,8 @@
 package tracker;
 
 import tracker.People.Student;
+import tracker.school.AvailableClasses;
+import tracker.school.SchoolClass;
 
 import java.util.*;
 
@@ -48,7 +50,7 @@ public class Main {
                         break;
                     }
                     if (studentPointInputChecker(pointsInput)) {
-                            addPoints(pointsInput);
+                        addPoints(pointsInput);
                     }
                 }
             } else if (userCommand.equals("find")) {
@@ -68,7 +70,10 @@ public class Main {
                         }
                     }
                 }
-            } else if (userCommand.isBlank()) {
+            } else if (userCommand.equals("statistics")) {
+                System.out.println("Type the name of a course to see details or 'back' to quit:");
+                currentClasses.printStatistics();
+            }else if (userCommand.isBlank()) {
                 System.out.println("No input.");
             } else if (userCommand.equals("back")) {
                 System.out.println("Enter 'exit' to exit the program.");
@@ -171,7 +176,8 @@ public class Main {
             pointValues[i] = Integer.parseInt(inputSplit[i]);
         }
         students.get(pointValues[0]).addAllClassPoints(
-                pointValues[1], pointValues[2], pointValues[3], pointValues[4]
+                pointValues[AvailableClasses.JAVA.getClassCode()+1], pointValues[AvailableClasses.JAVA.getClassCode()+1],
+                pointValues[AvailableClasses.JAVA.getClassCode()+1], pointValues[AvailableClasses.JAVA.getClassCode()+1]
         );
         currentClasses.addPoint(Arrays.copyOfRange(pointValues,1, 5));
         System.out.println("Points updated");
