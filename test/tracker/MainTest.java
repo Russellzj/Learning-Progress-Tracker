@@ -44,6 +44,13 @@ public class MainTest {
     }
 
     @Test
+    @DisplayName("Test Print Best Students")
+    void testBestStudents() {
+        testAddPoints();
+        Main.getTopStudents("Java");
+    }
+
+    @Test
     @DisplayName("SchoolClass Statistics ")
         void testMostPopular() {
             SchoolClass myClasses = new SchoolClass();
