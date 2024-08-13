@@ -1,5 +1,7 @@
 package tracker.school;
 
+import java.util.Objects;
+
 public enum AvailableClasses {
     JAVA(0, "Java", 600),
     DSA(1, "DSA", 400),
@@ -35,6 +37,14 @@ public enum AvailableClasses {
             }
         }
         return null;
+    }
+
+    public static AvailableClasses findByClassName(String className) {
+        for (AvailableClasses value : values()) {
+            if (className.equals(value.getClassName())) {
+                return value;
+            }
+        } return null;
     }
 
     public static int findPointsToCompleteByClassName(String className) {
