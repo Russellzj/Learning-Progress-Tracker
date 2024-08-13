@@ -23,6 +23,10 @@ public class Student {
     public String getLastName() {return lastName;}
     public String getEmail() {return email;}
     public int getId() {return id;}
+    public int getJava() { return java; }
+    public int getDataStructuresAndAlgroithms() { return dataStructuresAndAlgroithms;}
+    public int getDatabases() { return databases; }
+    public int getSpring() { return spring; }
 
 
     //The following methods are to add points to the student's classes
@@ -47,6 +51,8 @@ public class Student {
         addDatabasesPoints(databases);
         addSpringPoints(spring);
     }
+
+
 
     @Override
     public String toString() {
