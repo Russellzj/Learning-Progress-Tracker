@@ -4,6 +4,8 @@ import tracker.People.Student;
 import tracker.school.AvailableClasses;
 import tracker.school.SchoolClass;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.*;
 
 public class Main {
@@ -73,6 +75,15 @@ public class Main {
             } else if (userCommand.equals("statistics")) {
                 System.out.println("Type the name of a course to see details or 'back' to quit:");
                 currentClasses.printStatistics();
+                while(true) {
+                    String statisticInput = sc.nextLine();
+                    if (statisticInput.equals("back")) {
+                        break;
+                    } else {
+                        getTopStudents(statisticInput);
+                    }
+
+                }
             }else if (userCommand.isBlank()) {
                 System.out.println("No input.");
             } else if (userCommand.equals("back")) {
@@ -181,5 +192,67 @@ public class Main {
         );
         currentClasses.addPoint(Arrays.copyOfRange(pointValues,1, 5));
         System.out.println("Points updated");
+    }
+
+    public static void getTopStudents(String input) {
+        ArrayList<Student> topStudents = new ArrayList<>();
+        topStudents.addAll(students.values());
+        AvailableClasses chosenClass = AvailableClasses.findByClassName(input);
+        if (chosenClass == null) {
+            System.out.println("Unknown course.");
+            return;
+        }
+        System.out.println(chosenClass.getClassName());
+        String tableHeaders = "id   points completed";
+        System.out.println(tableHeaders);
+        String talbeFields = "%d %d     %f\n";
+
+        switch (chosenClass) {
+            case JAVA:
+                topStudents.sort(Comparator.comparing(Student::getJava).reversed().thenComparing(Student::getId));
+                for (int i = 0; i < 3 && i < topStudents.size(); i++) {
+                    if (topStudents.get(i).getJava() != 0) {
+                        System.out.printf(talbeFields, topStudents.get(i).getId(), topStudents.get(i).getJava(),
+                                new BigDecimal(
+                                        (double) topStudents.get(i).getJava()/chosenClass.getPointsToComplete() * 100).
+                                        setScale(1, RoundingMode.HALF_UP));
+                    }
+                }
+                break;
+            case DSA:
+                topStudents.sort(Comparator.comparing(Student::getDataStructuresAndAlgroithms).reversed().
+                        thenComparing(Student::getId));
+                for (int i = 0; i < 3 && i < topStudents.size(); i++) {
+                    if (topStudents.get(i).getDatabases() != 0) {
+                        System.out.printf(talbeFields, topStudents.get(i).getId(), topStudents.get(i).
+                                        getDataStructuresAndAlgroithms(),
+                                new BigDecimal(
+                                        (double) topStudents.get(i).getDataStructuresAndAlgroithms()/
+                                                chosenClass.getPointsToComplete() * 100).
+                                        setScale(1, RoundingMode.HALF_UP));
+                    }
+                }
+                break;
+            case DATABASES:
+                topStudents.sort(Comparator.comparing(Student::getDatabases).reversed().thenComparing(Student::getId));
+                for (int i = 0; i < 3 && i < topStudents.size(); i++) {
+                    if (topStudents.get(i).getDatabases() != 0) {
+                        System.out.printf(talbeFields, topStudents.get(i).getId(), topStudents.get(i).getDatabases(),
+                                new BigDecimal(
+                                        (double) topStudents.get(i).getDatabases()/chosenClass.getPointsToComplete() * 100).
+                                        setScale(1, RoundingMode.HALF_UP));
+                    }
+                }
+            case SPRING:
+                topStudents.sort(Comparator.comparing(Student::getSpring).reversed().thenComparing(Student::getId));
+                for (int i = 0; i < 3 && i < topStudents.size(); i++) {
+                    if (topStudents.get(i).getSpring() != 0) {
+                        System.out.printf(talbeFields, topStudents.get(i).getId(), topStudents.get(i).getSpring(),
+                                new BigDecimal(
+                                        (double) topStudents.get(i).getSpring()/chosenClass.getPointsToComplete() * 100).
+                                        setScale(1, RoundingMode.HALF_UP));
+                    }
+                }
+        }
     }
 }
