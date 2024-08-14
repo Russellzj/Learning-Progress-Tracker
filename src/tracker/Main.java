@@ -16,7 +16,7 @@ public class Main {
     public static HashSet<String> usedEmails = new HashSet<>();
     //Set initial student ID to 1000
     public static int currentStudentID = 1000;
-    public static SchoolClass currentClasses = new SchoolClass();
+    public static SchoolClass currentCourses = new SchoolClass();
 
     public static void main(String[] args) {
 
@@ -74,7 +74,7 @@ public class Main {
                 }
             } else if (userCommand.equals("statistics")) {
                 System.out.println("Type the name of a course to see details or 'back' to quit:");
-                currentClasses.printStatistics();
+                currentCourses.printStatistics();
                 while(true) {
                     String statisticInput = sc.nextLine();
                     if (statisticInput.equals("back")) {
@@ -186,31 +186,41 @@ public class Main {
         for (int i = 0; i < inputSplit.length; i++) {
             pointValues[i] = Integer.parseInt(inputSplit[i]);
         }
-        students.get(pointValues[0]).addAllClassPoints(
-                pointValues[AvailableClasses.JAVA.getClassCode()+1], pointValues[AvailableClasses.JAVA.getClassCode()+1],
-                pointValues[AvailableClasses.JAVA.getClassCode()+1], pointValues[AvailableClasses.JAVA.getClassCode()+1]
+        int studentID = Integer.parseInt(inputSplit[0]);
+
+        currentCourses.addPoint(Arrays.copyOfRange(pointValues,1, 5));
+        currentCourses.addStudent(
+                students.get(studentID).getJava() == 0,
+                students.get(studentID).getDataStructuresAndAlgroithms() ==0,
+                students.get(studentID).getDatabases() == 0,
+                students.get(studentID).getSpring() == 0
         );
-        currentClasses.addPoint(Arrays.copyOfRange(pointValues,1, 5));
+
+        students.get(studentID).addAllClassPoints(
+                pointValues[AvailableClasses.JAVA.getCourseCode()+1], pointValues[AvailableClasses.DSA.getCourseCode()+1],
+                pointValues[AvailableClasses.DATABASES.getCourseCode()+1], pointValues[AvailableClasses.SPRING.getCourseCode()+1]
+        );
+
         System.out.println("Points updated");
     }
 
     public static void getTopStudents(String input) {
         ArrayList<Student> topStudents = new ArrayList<>();
         topStudents.addAll(students.values());
-        AvailableClasses chosenClass = AvailableClasses.findByClassName(input);
+        AvailableClasses chosenClass = AvailableClasses.findByCourseName(input);
         if (chosenClass == null) {
             System.out.println("Unknown course.");
             return;
         }
-        System.out.println(chosenClass.getClassName());
+        System.out.println(chosenClass.getCourseName());
         String tableHeaders = "id   points completed";
         System.out.println(tableHeaders);
-        String talbeFields = "%d %d     %f\n";
+        String talbeFields = "%d %d     %.1f%%\n";
 
         switch (chosenClass) {
             case JAVA:
                 topStudents.sort(Comparator.comparing(Student::getJava).reversed().thenComparing(Student::getId));
-                for (int i = 0; i < 3 && i < topStudents.size(); i++) {
+                for (int i = 0; i < topStudents.size(); i++) {
                     if (topStudents.get(i).getJava() != 0) {
                         System.out.printf(talbeFields, topStudents.get(i).getId(), topStudents.get(i).getJava(),
                                 new BigDecimal(
@@ -222,8 +232,8 @@ public class Main {
             case DSA:
                 topStudents.sort(Comparator.comparing(Student::getDataStructuresAndAlgroithms).reversed().
                         thenComparing(Student::getId));
-                for (int i = 0; i < 3 && i < topStudents.size(); i++) {
-                    if (topStudents.get(i).getDatabases() != 0) {
+                for (int i = 0; i < topStudents.size(); i++) {
+                    if (topStudents.get(i).getDataStructuresAndAlgroithms() != 0) {
                         System.out.printf(talbeFields, topStudents.get(i).getId(), topStudents.get(i).
                                         getDataStructuresAndAlgroithms(),
                                 new BigDecimal(
@@ -235,7 +245,7 @@ public class Main {
                 break;
             case DATABASES:
                 topStudents.sort(Comparator.comparing(Student::getDatabases).reversed().thenComparing(Student::getId));
-                for (int i = 0; i < 3 && i < topStudents.size(); i++) {
+                for (int i = 0; i < topStudents.size(); i++) {
                     if (topStudents.get(i).getDatabases() != 0) {
                         System.out.printf(talbeFields, topStudents.get(i).getId(), topStudents.get(i).getDatabases(),
                                 new BigDecimal(
@@ -243,9 +253,10 @@ public class Main {
                                         setScale(1, RoundingMode.HALF_UP));
                     }
                 }
+                break;
             case SPRING:
                 topStudents.sort(Comparator.comparing(Student::getSpring).reversed().thenComparing(Student::getId));
-                for (int i = 0; i < 3 && i < topStudents.size(); i++) {
+                for (int i = 0; i < topStudents.size(); i++) {
                     if (topStudents.get(i).getSpring() != 0) {
                         System.out.printf(talbeFields, topStudents.get(i).getId(), topStudents.get(i).getSpring(),
                                 new BigDecimal(
