@@ -75,7 +75,7 @@ public class Main {
             } else if (userCommand.equals("statistics")) {
                 System.out.println("Type the name of a course to see details or 'back' to quit:");
                 currentCourses.printStatistics();
-                while(true) {
+                while (true) {
                     String statisticInput = sc.nextLine();
                     if (statisticInput.equals("back")) {
                         break;
@@ -84,6 +84,8 @@ public class Main {
                     }
 
                 }
+            } else if (userCommand.equals("notify")) {
+                notifyStudents();
             }else if (userCommand.isBlank()) {
                 System.out.println("No input.");
             } else if (userCommand.equals("back")) {
@@ -191,7 +193,7 @@ public class Main {
         currentCourses.addPoint(Arrays.copyOfRange(pointValues,1, 5));
         currentCourses.addStudent(
                 students.get(studentID).getJava() == 0,
-                students.get(studentID).getDataStructuresAndAlgroithms() ==0,
+                students.get(studentID).getDataStructuresAndAlgorithms() ==0,
                 students.get(studentID).getDatabases() == 0,
                 students.get(studentID).getSpring() == 0
         );
@@ -237,14 +239,14 @@ public class Main {
                 }
                 break;
             case DSA:
-                topStudents.sort(Comparator.comparing(Student::getDataStructuresAndAlgroithms).reversed().
+                topStudents.sort(Comparator.comparing(Student::getDataStructuresAndAlgorithms).reversed().
                         thenComparing(Student::getId));
                 for (Student value : topStudents) {
-                    if (value.getDataStructuresAndAlgroithms() != 0) {
+                    if (value.getDataStructuresAndAlgorithms() != 0) {
                         System.out.printf(talbeFields, value.getId(), value.
-                                        getDataStructuresAndAlgroithms(),
+                                        getDataStructuresAndAlgorithms(),
                                 new BigDecimal(
-                                        (double) value.getDataStructuresAndAlgroithms() /
+                                        (double) value.getDataStructuresAndAlgorithms() /
                                                 chosenClass.getPointsToComplete() * 100).
                                         setScale(1, RoundingMode.HALF_UP));
                     }
@@ -272,5 +274,50 @@ public class Main {
                     }
                 }
         }
+    }
+    public static void notifyStudents() {
+        int totalStudentsNotified = 0;
+        boolean studentNotified = false;
+        String message = """
+                To: %s
+                Re: Your Learning Progress
+                Hello, %s %s! You have accomplished our %s course!
+                """;
+        for (Student student : students.values()) {
+            if (!student.isJavaCompleted() && student.getJava() >=
+                    AvailableCourses.JAVA.getPointsToComplete()) {
+                students.get(student.getId()).setJavaCompleted();
+                System.out.printf(message, student.getEmail(), student.getFirstName(), student.getLastName(),
+                        AvailableCourses.JAVA.getCourseName());
+                studentNotified = true;
+            }
+            if (!student.isDataStructuresAndAlgorithmsCompleted() && student.getDataStructuresAndAlgorithms() >=
+                    AvailableCourses.DSA.getPointsToComplete()) {
+                students.get(student.getId()).setDataStructuresAndAlgorithms();
+                System.out.printf(message, student.getEmail(), student.getFirstName(), student.getLastName(),
+                        AvailableCourses.DSA.getCourseName());
+                studentNotified = true;
+            }
+            if (!student.isDatabasesCompleted() && student.getDatabases() >=
+                    AvailableCourses.DATABASES.getPointsToComplete()) {
+                students.get(student.getId()).setDatabasesCompleted();
+                System.out.printf(message, student.getEmail(), student.getFirstName(), student.getLastName(),
+                        AvailableCourses.DATABASES.getCourseName());
+                studentNotified = true;
+            }
+            if (!student.isSpringCompleted() && student.getSpring() >=
+                    AvailableCourses.SPRING.getPointsToComplete()) {
+                students.get(student.getId()).setSpringCompleted();
+                System.out.printf(message, student.getEmail(), student.getFirstName(), student.getLastName(),
+                        AvailableCourses.SPRING.getCourseName());
+                studentNotified = true;
+            }
+            if (studentNotified) {
+                totalStudentsNotified++;
+                studentNotified = false;
+            }
+        }
+        System.out.printf("Total %s students have been notified.\n",
+                totalStudentsNotified);
     }
 }
