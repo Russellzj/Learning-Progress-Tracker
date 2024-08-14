@@ -1,55 +1,53 @@
 package tracker.school;
 
-import java.util.Objects;
-
 public enum AvailableClasses {
     JAVA(0, "Java", 600),
     DSA(1, "DSA", 400),
     DATABASES(2, "Databases", 480),
     SPRING(3, "Spring", 550);
 
-    private final int classCode;
-    private final String className;
+    private final int courseCode;
+    private final String courseName;
     private final int pointsToComplete;
 
-    AvailableClasses(int classCode, String className, int pointsToComplete) {
-        this.classCode = classCode;
-        this.className = className;
+    AvailableClasses(int courseCode, String courseName, int pointsToComplete) {
+        this.courseCode = courseCode;
+        this.courseName = courseName;
         this.pointsToComplete = pointsToComplete;
     }
 
-    public int getClassCode(){
-        return classCode;
+    public int getCourseCode(){
+        return courseCode;
     }
 
-    public String getClassName(){
-        return className;
+    public String getCourseName(){
+        return courseName;
     }
 
     public int getPointsToComplete() {
         return pointsToComplete;
     }
 
-    public static String findClassNameByClassCode(int classCode) {
+    public static AvailableClasses findCourseByCourseCode(int classCode) {
         for (AvailableClasses value : values()) {
-            if (value.getClassCode() == classCode) {
-                return value.className;
+            if (value.getCourseCode() == classCode) {
+                return value;
             }
         }
         return null;
     }
 
-    public static AvailableClasses findByClassName(String className) {
+    public static AvailableClasses findByCourseName(String className) {
         for (AvailableClasses value : values()) {
-            if (className.equals(value.getClassName())) {
+            if (className.equals(value.getCourseName())) {
                 return value;
             }
         } return null;
     }
 
-    public static int findPointsToCompleteByClassName(String className) {
+    public static int findPointsToCompleteByCourseName(String className) {
         for (AvailableClasses value : values()) {
-            if (value.getClassName().equals(className)) {
+            if (value.getCourseName().equals(className)) {
                 return value.getPointsToComplete();
             }
         }
