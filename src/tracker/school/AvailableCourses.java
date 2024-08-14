@@ -44,13 +44,4 @@ public enum AvailableCourses {
             }
         } return null;
     }
-
-    public static int findPointsToCompleteByCourseName(String className) {
-        for (AvailableCourses value : values()) {
-            if (value.getCourseName().equals(className)) {
-                return value.getPointsToComplete();
-            }
-        }
-        return 0;
-    }
 }
