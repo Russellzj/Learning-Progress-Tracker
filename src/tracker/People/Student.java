@@ -8,9 +8,13 @@ public class Student {
     private String email;
     //classes that are filled with points from said classes
     private int java = 0;
-    private int dataStructuresAndAlgroithms = 0;
+    private int dataStructuresAndAlgorithms = 0;
     private int databases = 0;
     private int spring = 0;
+    private boolean javaCompleted = false;
+    private boolean dataStructuresAndAlgorithmsCompleted = false;
+    private boolean databasesCompleted = false;
+    private boolean springCompleted = false;
 
     public Student(String firstName, String lastName, String email, int id) {
         this.firstName = firstName;
@@ -24,7 +28,7 @@ public class Student {
     public String getEmail() {return email;}
     public int getId() {return id;}
     public int getJava() { return java; }
-    public int getDataStructuresAndAlgroithms() { return dataStructuresAndAlgroithms;}
+    public int getDataStructuresAndAlgorithms() { return dataStructuresAndAlgorithms;}
     public int getDatabases() { return databases; }
     public int getSpring() { return spring; }
 
@@ -34,13 +38,11 @@ public class Student {
         this.java += points;
     }
     public void addDataStructuresAndAlgorithmsPoints(int points) {
-        this.dataStructuresAndAlgroithms += points;
+        this.dataStructuresAndAlgorithms += points;
     }
-
     public void addDatabasesPoints(int points) {
         this.databases += points;
     }
-
     public void addSpringPoints(int points) {
         this.spring += points;
     }
@@ -52,11 +54,37 @@ public class Student {
         addSpringPoints(spring);
     }
 
+    //get methods for completed courses and notified
+    public boolean isJavaCompleted() {
+        return javaCompleted;
+    }
+    public boolean isDataStructuresAndAlgorithmsCompleted() {
+        return dataStructuresAndAlgorithmsCompleted;
+    }
+    public boolean isDatabasesCompleted() {
+        return databasesCompleted;
+    }
+    public boolean isSpringCompleted() {
+        return springCompleted;
+    }
 
+    //Sets the completed course to true if a notification is sent
+    public void setJavaCompleted() {
+        this.javaCompleted = true;
+    }
+    public void setDataStructuresAndAlgorithms() {
+        this.dataStructuresAndAlgorithmsCompleted = true;
+    }
+    public void setDatabasesCompleted() {
+        this.databasesCompleted = true;
+    }
+    public void setSpringCompleted() {
+        this.springCompleted = true;
+    }
 
     @Override
     public String toString() {
-        return String.format("%d points: Java=%d; DSA=%d; Databases=%d; Spring=%d", id,java, dataStructuresAndAlgroithms,
+        return String.format("%d points: Java=%d; DSA=%d; Databases=%d; Spring=%d", id,java, dataStructuresAndAlgorithms,
                 databases, spring);
     }
 
