@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.ValueSource;
-import tracker.school.SchoolClass;
+import tracker.school.SchoolCourses;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -53,7 +53,7 @@ public class MainTest {
     @Test
     @DisplayName("SchoolClass Statistics ")
         void testMostPopular() {
-            SchoolClass myClasses = new SchoolClass();
+            SchoolCourses myClasses = new SchoolCourses();
             myClasses.addPoint(new int[]{1, 2, 3, 4});
             myClasses.addPoint(new int[]{5, 6, 7, 0});
             myClasses.printStatistics();
