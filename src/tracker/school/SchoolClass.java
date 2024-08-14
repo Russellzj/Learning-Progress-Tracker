@@ -1,60 +1,127 @@
 package tracker.school;
 
 import java.util.ArrayList;
-import java.util.function.Function;
+import java.util.Objects;
 
 public class SchoolClass {
     //The following Collections hold the scores that students get in each class
-    private ArrayList<Integer> java = new ArrayList<>();
-    private ArrayList<Integer> dsa = new ArrayList<>();
+    private ArrayList<Integer> javaTotalPoints = new ArrayList<>();
+    private ArrayList<Integer> dsaTotalPoints = new ArrayList<>();
     private ArrayList<Integer> databases = new ArrayList<>();
     private ArrayList<Integer> spring = new ArrayList<>();
 
+    //The following holds total number of unique students in each course
+    private int javaNumberOfStudents = 0;
+    private int  dsaNumberOfStudents = 0;
+    private int databasesNumberOfStudents = 0;
+    private int springNumberOfStudents = 0;
+
+
     public void addPoint(int[] points) {
         if (points[0] != 0) {
-            java.add(points[0]);
+            javaTotalPoints.add(points[0]);
         }
         if (points[1] != 0) {
-            dsa.add(points[1]);
+            dsaTotalPoints.add(points[1]);
         }
         if (points[2] != 0) {
             databases.add(points[2]);
+
         }
         if (points[3] != 0) {
             spring.add(points[3]);
         }
     }
+    public void addStudent(boolean newJavaStudent, boolean newDsaStudnet, boolean newDatabasesStudent
+            , boolean newSpringStudent) {
+        javaNumberOfStudents = newJavaStudent ? javaNumberOfStudents + 1 : javaNumberOfStudents;
+        dsaNumberOfStudents = newDsaStudnet ? dsaNumberOfStudents + 1 : dsaNumberOfStudents;
+        databasesNumberOfStudents = newDatabasesStudent ? databasesNumberOfStudents + 1 : databasesNumberOfStudents;
+        springNumberOfStudents = newSpringStudent ? springNumberOfStudents + 1 : springNumberOfStudents;
+    }
 
-    public String getMostPopular() {
-        if (java.isEmpty() && dsa.isEmpty() && databases.isEmpty() && spring.isEmpty()) {
-            return "Most popular: n/a";
-        }
-        int largest = 0;
-        //move all values to an array for more easily finding the largest
-        int[] numberOfClassesTaken = new int[]{java.size(), dsa.size(), databases.size(), spring.size()};
+    //Gets the largest course from the array of ints and returns the course(s)' names
+    public String getLargestCourse(int[] values) {
+        //Collection to hold largest values location
+        ArrayList<Integer> largest = new ArrayList<>();
+        //Starts from the first element
+        largest.add(0);
 
-        for (int i = 0; i < numberOfClassesTaken.length; i++) {
-            if (numberOfClassesTaken[i] > numberOfClassesTaken[largest]) {
-                largest = i;
+        //Goes through the array and find the largest value(s)
+        for (int i = 1; i < values.length; i++) {
+            if (values[i] > values[largest.get(largest.size() - 1)]) {
+                largest.clear();
+                largest.add(i);
+            } else if (values[i] == values[largest.get(largest.size() - 1)]) {
+                largest.add(i);
             }
         }
-        return "Most popular: " + AvailableClasses.findClassNameByClassCode(largest);
+
+        StringBuilder largestCourseNames = new StringBuilder();
+        for (int course : largest) {
+            largestCourseNames.append(Objects.requireNonNull(AvailableClasses.findCourseByCourseCode(course)).getCourseName()).append(" ");
+        }
+
+        return largestCourseNames.toString();
+    }
+
+    //Gets the largest course from the array of ints and returns the course(s)' names
+    public String getSmallestCourse(int[] values) {
+        //Collection to hold largest values location
+        ArrayList<Integer> smallest = new ArrayList<>();
+        //Starts from the first element
+        smallest.add(0);
+
+        //Goes through the array and find the smallest value(s)
+        for (int i = 1; i < values.length; i++) {
+            if (values[i] < values[smallest.get(smallest.size() - 1)]) {
+                smallest.clear();
+                smallest.add(i);
+            } else if (values[i] == values[smallest.get(smallest.size() - 1)]) {
+                smallest.add(i);
+            }
+        }
+
+        String smallestCourseNames = "";
+        for (int course : smallest) {
+            smallestCourseNames += AvailableClasses.findCourseByCourseCode(course).getCourseName() + " ";
+        }
+
+        return smallestCourseNames;
+    }
+
+    //returns true if all the courses have the same value
+    private boolean isAllSame(int[] courses) {
+        boolean allEqual = true;
+        //Holds the first courses value to compare to all the others
+        int courseComparator = courses[0];
+        for (int course : courses) {
+            if (courseComparator != course) return false;
+        }
+        return true;
+    }
+
+    public String getMostPopular() {
+        if (javaTotalPoints.isEmpty() && dsaTotalPoints.isEmpty() && databases.isEmpty() && spring.isEmpty()) {
+            return "n/a";
+        }
+        //move all values to an array for more easily finding the largest
+        int[] numberOfCoursesTaken = new int[]{javaNumberOfStudents, dsaNumberOfStudents,
+                databasesNumberOfStudents, springNumberOfStudents};
+        return getLargestCourse(numberOfCoursesTaken);
     }
 
     public String getLeastPopular() {
-        if (java.isEmpty() && dsa.isEmpty() && databases.isEmpty() && spring.isEmpty()) {
+        if (javaTotalPoints.isEmpty() && dsaTotalPoints.isEmpty() && databases.isEmpty() && spring.isEmpty()) {
             return "Least popular: n/a";
         }
-        int[] numberOfClassesTaken = new int[]{java.size(), dsa.size(), databases.size(), spring.size()};
-        int smallest = 0;
-
-        for (int i = 0; i < numberOfClassesTaken.length; i++) {
-            if (numberOfClassesTaken[i] < numberOfClassesTaken[smallest]) {
-                smallest = i;
-            }
+        int[] numberOfCoursesTaken = new int[]{javaNumberOfStudents, dsaNumberOfStudents, databasesNumberOfStudents,
+                springNumberOfStudents};
+        if (isAllSame(numberOfCoursesTaken)) {
+            return "n/a";
         }
 
-        return "Least popular: " + AvailableClasses.findClassNameByClassCode(smallest);
+        return getSmallestCourse(numberOfCoursesTaken);
     }
 
     //Calculates total points
@@ -69,41 +136,32 @@ public class SchoolClass {
     //Returns an array of all points
     private int[] getAllPoints() {
         return new int[]{
-                getTotalPoints(java),
-                getTotalPoints(dsa),
+                getTotalPoints(javaTotalPoints),
+                getTotalPoints(dsaTotalPoints),
                 getTotalPoints(databases),
                 getTotalPoints(spring)
         };
     }
 
     public String getMostActive() {
-        if (java.isEmpty() && dsa.isEmpty() && databases.isEmpty() && spring.isEmpty()) {
-            return "Highest activity: n/a";
+        if (javaTotalPoints.isEmpty() && dsaTotalPoints.isEmpty() && databases.isEmpty() && spring.isEmpty()) {
+            return "n/a";
         }
-        int[] totalPoints = getAllPoints();
-        int mostActivity = 0;
-
-        for (int i = 0; i < totalPoints.length; i++) {
-            if (totalPoints[i] > totalPoints[mostActivity]) {
-                mostActivity = i;
-            }
-        }
-        return "Highest activity: " + AvailableClasses.findClassNameByClassCode(mostActivity);
+        //move all values to an array for more easily finding the largest
+        int[] numberOfClassesTaken = new int[]{javaTotalPoints.size(), dsaTotalPoints.size(), databases.size(), spring.size()};
+        return getLargestCourse(numberOfClassesTaken);
     }
 
     public String getLeastActive() {
-        if (java.isEmpty() && dsa.isEmpty() && databases.isEmpty() && spring.isEmpty()) {
-            return "Lowest activity: n/a";
+        if (javaTotalPoints.isEmpty() && dsaTotalPoints.isEmpty() && databases.isEmpty() && spring.isEmpty()) {
+            return "n/a";
         }
-        int[] totalPoint = getAllPoints();
-        int leastActivity = 0;
-        for (int i = 0; i < totalPoint.length; i++) {
-            if (totalPoint[i] < totalPoint[leastActivity]) {
-                leastActivity = i;
-            }
+        int[] numberOfCoursesTaken = new int[]{javaTotalPoints.size(), dsaTotalPoints.size(), databases.size(), spring.size()};
+        if (isAllSame(numberOfCoursesTaken)) {
+            return "n/a";
         }
 
-        return "Lowest activity: " + AvailableClasses.findClassNameByClassCode(leastActivity);
+        return getSmallestCourse(numberOfCoursesTaken);
     }
 
     private int getAverageScore(ArrayList<Integer> points) {
@@ -115,49 +173,40 @@ public class SchoolClass {
 
     private int[] getAllAvg() {
         return new int[] {
-          getAverageScore(java),
-          getAverageScore(dsa),
+          getAverageScore(javaTotalPoints),
+          getAverageScore(dsaTotalPoints),
           getAverageScore(databases),
           getAverageScore(spring)
         };
     }
 
     public String getEasiest() {
-        if (java.isEmpty() && dsa.isEmpty() && databases.isEmpty() && spring.isEmpty()) {
-            return "Easiest course: n/a";
+        if (javaTotalPoints.isEmpty() && dsaTotalPoints.isEmpty() && databases.isEmpty() && spring.isEmpty()) {
+            return "n/a";
         }
-        int[] averageScores = getAllAvg();
-        int highestAvg = 0;
 
-        for (int i = 0; i < averageScores.length; i++) {
-            if (averageScores[i] > averageScores[highestAvg]) {
-                if (averageScores[i] != 0) {
-                    highestAvg = i;
-                }
-            }
-        }
-        return "Easiest course: " + AvailableClasses.findClassNameByClassCode(highestAvg);
+        int[] averageScores = getAllAvg();
+
+        return getLargestCourse(averageScores);
     }
 
     public String getHardest() {
-        if (java.isEmpty() && dsa.isEmpty() && databases.isEmpty() && spring.isEmpty()) {
-            return "Hardest course: n/a";
+        if (javaTotalPoints.isEmpty() && dsaTotalPoints.isEmpty() && databases.isEmpty() && spring.isEmpty()) {
+            return "n/a";
         }
         int[] averageScores = getAllAvg();
-        int lowestAvg = 0;
 
-        for (int i = 0; i < averageScores.length; i++) {
-            if (averageScores[i] < averageScores[lowestAvg]) {
-                lowestAvg = i;
-            }
-        }
-
-        return "Hardest course: " + AvailableClasses.findClassNameByClassCode(lowestAvg);
+        return getSmallestCourse(averageScores);
     }
 
     public void printStatistics(){
 
-        System.out.printf("%s\n%s\n%s\n%s\n%s\n%s\n",
+        System.out.printf("Most popular: %s\n" +
+                        "Least popular: %s\n" +
+                        "Highest activity: %s\n" +
+                        "Lowest activity: %s\n" +
+                        "Easiest course: %s\n" +
+                        "Hardest course: %s\n",
                 getMostPopular(), getLeastPopular(), getMostActive(), getLeastActive(), getEasiest(), getHardest());
     }
 }
