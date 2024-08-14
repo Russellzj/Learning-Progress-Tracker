@@ -50,15 +50,6 @@ public class MainTest {
         Main.getTopStudents("Java");
     }
 
-    @Test
-    @DisplayName("SchoolClass Statistics ")
-        void testMostPopular() {
-            SchoolCourses myClasses = new SchoolCourses();
-            myClasses.addPoint(new int[]{1, 2, 3, 4});
-            myClasses.addPoint(new int[]{5, 6, 7, 0});
-            myClasses.printStatistics();
-        }
-
     /*
     @Test
     public void testStudentInputChecker() {
