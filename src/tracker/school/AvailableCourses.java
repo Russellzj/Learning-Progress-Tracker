@@ -1,6 +1,6 @@
 package tracker.school;
 
-public enum AvailableClasses {
+public enum AvailableCourses {
     JAVA(0, "Java", 600),
     DSA(1, "DSA", 400),
     DATABASES(2, "Databases", 480),
@@ -10,7 +10,7 @@ public enum AvailableClasses {
     private final String courseName;
     private final int pointsToComplete;
 
-    AvailableClasses(int courseCode, String courseName, int pointsToComplete) {
+    AvailableCourses(int courseCode, String courseName, int pointsToComplete) {
         this.courseCode = courseCode;
         this.courseName = courseName;
         this.pointsToComplete = pointsToComplete;
@@ -28,8 +28,8 @@ public enum AvailableClasses {
         return pointsToComplete;
     }
 
-    public static AvailableClasses findCourseByCourseCode(int classCode) {
-        for (AvailableClasses value : values()) {
+    public static AvailableCourses findCourseByCourseCode(int classCode) {
+        for (AvailableCourses value : values()) {
             if (value.getCourseCode() == classCode) {
                 return value;
             }
@@ -37,8 +37,8 @@ public enum AvailableClasses {
         return null;
     }
 
-    public static AvailableClasses findByCourseName(String className) {
-        for (AvailableClasses value : values()) {
+    public static AvailableCourses findByCourseName(String className) {
+        for (AvailableCourses value : values()) {
             if (className.equals(value.getCourseName())) {
                 return value;
             }
@@ -46,7 +46,7 @@ public enum AvailableClasses {
     }
 
     public static int findPointsToCompleteByCourseName(String className) {
-        for (AvailableClasses value : values()) {
+        for (AvailableCourses value : values()) {
             if (value.getCourseName().equals(className)) {
                 return value.getPointsToComplete();
             }

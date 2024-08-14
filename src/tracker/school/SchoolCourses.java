@@ -3,7 +3,7 @@ package tracker.school;
 import java.util.ArrayList;
 import java.util.Objects;
 
-public class SchoolClass {
+public class SchoolCourses {
     //The following Collections hold the scores that students get in each class
     private ArrayList<Integer> javaTotalPoints = new ArrayList<>();
     private ArrayList<Integer> dsaTotalPoints = new ArrayList<>();
@@ -59,7 +59,7 @@ public class SchoolClass {
 
         StringBuilder largestCourseNames = new StringBuilder();
         for (int course : largest) {
-            largestCourseNames.append(Objects.requireNonNull(AvailableClasses.findCourseByCourseCode(course)).getCourseName()).append(" ");
+            largestCourseNames.append(Objects.requireNonNull(AvailableCourses.findCourseByCourseCode(course)).getCourseName()).append(" ");
         }
 
         return largestCourseNames.toString();
@@ -84,7 +84,7 @@ public class SchoolClass {
 
         String smallestCourseNames = "";
         for (int course : smallest) {
-            smallestCourseNames += AvailableClasses.findCourseByCourseCode(course).getCourseName() + " ";
+            smallestCourseNames += AvailableCourses.findCourseByCourseCode(course).getCourseName() + " ";
         }
 
         return smallestCourseNames;
