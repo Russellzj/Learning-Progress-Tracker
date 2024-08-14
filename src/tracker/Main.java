@@ -10,9 +10,9 @@ import java.util.*;
 
 public class Main {
 
-    //public static List<Student> students2= new ArrayList<>();
-    //public static LinkedHashSet<Student> students = new LinkedHashSet<>();
+    //Organized list of students by when they were entered and by their ID Number
     public static LinkedHashMap<Integer, Student> students = new LinkedHashMap<>();
+    //Emails used by the students
     public static HashSet<String> usedEmails = new HashSet<>();
     //Set initial student ID to 1000
     public static int currentStudentID = 1000;
@@ -25,9 +25,11 @@ public class Main {
         //boolean running = true;
         while (true) {
             String userCommand = sc.nextLine();
+            //Exits the Program
             if (userCommand.equals("exit")) {
                 System.out.println("Bye!");
                 break;
+            //Loop to add student(s) to students
             } else if (userCommand.equals("add students")) {
                 System.out.println("Enter student credentials or 'back' to return");
                 int studentsAdded = 0;
@@ -44,6 +46,7 @@ public class Main {
                         break;
                     }
                 }
+            //Allows user to add points to the students courses
             } else if (userCommand.equals("add points")) {
                 System.out.println("Enter an id and points or 'back' to return");
                 while (true) {
@@ -55,6 +58,7 @@ public class Main {
                         addPoints(pointsInput);
                     }
                 }
+            //Allows user to print out student based on their ID code
             } else if (userCommand.equals("find")) {
                 System.out.println("Enter an id or 'back' to return");
                 while (true) {
@@ -72,6 +76,7 @@ public class Main {
                         }
                     }
                 }
+            //Retrieves the statistics of the courses and finds students based on the courses they have taken
             } else if (userCommand.equals("statistics")) {
                 System.out.println("Type the name of a course to see details or 'back' to quit:");
                 currentCourses.printStatistics();
@@ -84,24 +89,23 @@ public class Main {
                     }
 
                 }
+            //Notifies students if they have completed a course
             } else if (userCommand.equals("notify")) {
                 notifyStudents();
             }else if (userCommand.isBlank()) {
                 System.out.println("No input.");
             } else if (userCommand.equals("back")) {
                 System.out.println("Enter 'exit' to exit the program.");
-
             } else if (userCommand.equals("list")) {
                 printStudentList();
-            }
-            else {
+            } else {
                 System.out.println("Unknown command!");
             }
         }
 
     }
 
-    //Adds students to Student ArrayList
+    //Adds students to Students
     public static boolean addStudent(String userInput) {
         String[] studentInfo = studentInputSeparator(userInput);
         String firstName = studentInfo[0];
@@ -220,11 +224,9 @@ public class Main {
         }
         //Print Setup
         System.out.println(chosenClass.getCourseName());
-        String tableHeaders = "id   points completed";
-        System.out.println(tableHeaders);
+        String tableHeaders = "id   points completed\n";
+        System.out.print(tableHeaders);
         String talbeFields = "%d %d     %.1f%%\n";
-
-
 
         switch (chosenClass) {
             case JAVA:
@@ -275,6 +277,8 @@ public class Main {
                 }
         }
     }
+
+    //Notifies students if they have completed a course and has not been notified before
     public static void notifyStudents() {
         int totalStudentsNotified = 0;
         boolean studentNotified = false;
