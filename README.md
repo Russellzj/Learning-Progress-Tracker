@@ -1,4 +1,4 @@
-Student Course Tracker
+Learning Progress Tracker Overview
 Overview
 
 The Student Course Tracker program manages and analyzes student course data using a LinkedHashMap to store student information by their unique IDs. It provides functionality to track and update course statistics, such as the most popular and least popular courses, as well as student activity levels.
